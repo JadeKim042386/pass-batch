@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    url: ${LOCAL_DB_URL}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+  batch:
+    jdbc:
+      initialize-schema: always
+
+---
+
+spring:
+  config.activate.on-profile: test
+  datasource.url: jdbc:h2:mem:testdb
+  sql.init.mode: always
+  jpa:
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 10 # 지정된 개수만큼 쌓아뒀다가 쿼리를 보냄
+logging:
+  level:
+    org.hibernate.type.descriptor.sql: trace # 바인딩되는 모든 파라미터를 출력
