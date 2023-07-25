@@ -16,7 +16,7 @@ public class Booking extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long passId; //이용권 ID
+    private Long passTicketId; //이용권 ID
     private String userId; //사용자 ID
 
     @Enumerated(EnumType.STRING)
@@ -31,8 +31,8 @@ public class Booking extends AuditingFields {
     protected Booking() {
     }
 
-    private Booking(Long passId, String userId, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
-        this.passId = passId;
+    private Booking(Long passTicketId, String userId, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
+        this.passTicketId = passTicketId;
         this.userId = userId;
         this.status = status;
         this.usedPass = usedPass;
@@ -42,8 +42,8 @@ public class Booking extends AuditingFields {
         this.cancelledAt = cancelledAt;
     }
 
-    public static Booking of(Long passId, String userId, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
-        return new Booking(passId, userId, status, usedPass, attended, startedAt, endedAt, cancelledAt);
+    public static Booking of(Long passTicketId, String userId, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
+        return new Booking(passTicketId, userId, status, usedPass, attended, startedAt, endedAt, cancelledAt);
     }
 
     @Override

@@ -10,13 +10,13 @@ import java.util.Objects;
 
 @ToString(callSuper = true)
 @Getter
-@Table(name = "pass") //TODO: Indexing
+@Table(name = "pass_ticket") //TODO: Indexing
 @Entity
-public class Pass extends AuditingFields {
+public class PassTicket extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String packageId; //패키지 ID
+    private Long packageId; //패키지 ID
     private String userId; //사용자 ID
 
     @Enumerated(EnumType.STRING)
@@ -27,10 +27,10 @@ public class Pass extends AuditingFields {
     private LocalDateTime endedAt; //종료 일시
     private LocalDateTime expiredAt; //만료 일시
 
-    protected Pass() {
+    protected PassTicket() {
     }
 
-    private Pass(String packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
+    private PassTicket(Long packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
         this.packageId = packageId;
         this.userId = userId;
         this.status = status;
@@ -40,14 +40,14 @@ public class Pass extends AuditingFields {
         this.expiredAt = expiredAt;
     }
 
-    public static Pass of(String packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
-        return new Pass(packageId, userId, status, remainingCount, startedAt, endedAt, expiredAt);
+    public static PassTicket of(Long packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
+        return new PassTicket(packageId, userId, status, remainingCount, startedAt, endedAt, expiredAt);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Pass that)) return false;
+        if (!(o instanceof PassTicket that)) return false;
         return this.getId() != null && Objects.equals(this.getId(), that.getId());
     }
 
