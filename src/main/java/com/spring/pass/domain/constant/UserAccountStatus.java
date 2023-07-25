@@ -5,6 +5,6 @@ package com.spring.pass.domain.constant;
  * <br><br>
  * ACTIVE, INACTIVE
  */
-public enum UserStatus {
+public enum UserAccountStatus {
     ACTIVE, INACTIVE
 }

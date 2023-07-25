@@ -17,7 +17,7 @@ VALUES ('A1000000', '우영우', 'ACTIVE', '01011112222', NULL, '2022-08-01 00:0
        ('B2000001', '태수미', 'ACTIVE', '01000001111', NULL, '2022-08-01 00:00:00');
 
 INSERT INTO pass_ticket (package_id, user_id, status, remaining_count, started_at, ended_at, expired_at, created_at) VALUES
-    (1, 'A1000000', 'IN_PROGRESS', 100, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00');
+    (1, 'A1000000', 'PROGRESSED', 100, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00');
 
 INSERT INTO booking (pass_ticket_id, user_id, status, used_pass, attended, started_at, ended_at, cancelled_at, created_at) VALUES
-    (1, 'A1000000', 'IN_PROGRESS', true, true, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00')
+    (1, 'A1000000', 'PROGRESSED', true, true, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00')

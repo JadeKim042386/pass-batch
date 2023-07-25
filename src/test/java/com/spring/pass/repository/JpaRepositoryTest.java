@@ -1,12 +1,13 @@
 package com.spring.pass.repository;
 
+import com.spring.pass.config.TestJpaConfig;
 import com.spring.pass.domain.Booking;
 import com.spring.pass.domain.Package;
 import com.spring.pass.domain.PassTicket;
 import com.spring.pass.domain.UserAccount;
 import com.spring.pass.domain.constant.BookingStatus;
-import com.spring.pass.domain.constant.PassStatus;
-import com.spring.pass.domain.constant.UserStatus;
+import com.spring.pass.domain.constant.PassTicketStatus;
+import com.spring.pass.domain.constant.UserAccountStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ import static org.assertj.core.api.Assertions.*;
 class JpaRepositoryTest {
 
     @DisplayName("Booking Jpa 테스트")
-    @Import(JpaRepositoryTest.TestJpaConfig.class)
+    @Import(TestJpaConfig.class)
     @DataJpaTest
     @Nested
     class BookingJpaTest {
@@ -57,7 +58,7 @@ class JpaRepositoryTest {
             Booking booking = Booking.of(
                     1L,
                     "A1000000",
-                    BookingStatus.IN_PROGRESS,
+                    BookingStatus.PROGRESSED,
                     true,
                     true,
                     LocalDateTime.now(),
@@ -84,7 +85,7 @@ class JpaRepositoryTest {
     }
 
     @DisplayName("Package Jpa 테스트")
-    @Import(JpaRepositoryTest.TestJpaConfig.class)
+    @Import(TestJpaConfig.class)
     @DataJpaTest
     @Nested
     class PackageJpaTest {
@@ -136,7 +137,7 @@ class JpaRepositoryTest {
     }
 
     @DisplayName("PassTicket Jpa 테스트")
-    @Import(JpaRepositoryTest.TestJpaConfig.class)
+    @Import(TestJpaConfig.class)
     @DataJpaTest
     @Nested
     class PassTicketJpaTest {
@@ -166,7 +167,7 @@ class JpaRepositoryTest {
             PassTicket passTicket = PassTicket.of(
                     3L,
                     "A1000002",
-                    PassStatus.IN_PROGRESS,
+                    PassTicketStatus.PROGRESSED,
                     20,
                     LocalDateTime.now(),
                     LocalDateTime.now().plusDays(1),
@@ -192,7 +193,7 @@ class JpaRepositoryTest {
     }
 
     @DisplayName("UserAccount Jpa 테스트")
-    @Import(JpaRepositoryTest.TestJpaConfig.class)
+    @Import(TestJpaConfig.class)
     @DataJpaTest
     @Nested
     class UserAccountJpaTest {
@@ -222,7 +223,7 @@ class JpaRepositoryTest {
             UserAccount userAccount = UserAccount.of(
                     "C1000000",
                     "김주영",
-                    UserStatus.ACTIVE,
+                    UserAccountStatus.ACTIVE,
                     "01012341234",
                     null
             );
@@ -244,10 +245,5 @@ class JpaRepositoryTest {
             // Then
             assertThat(userAccountRepository.count()).isEqualTo(previousCount - 1);
         }
-    }
-
-    @EnableJpaAuditing
-    @TestConfiguration
-    public static class TestJpaConfig {
     }
 }

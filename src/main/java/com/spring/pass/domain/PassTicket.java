@@ -1,6 +1,6 @@
 package com.spring.pass.domain;
 
-import com.spring.pass.domain.constant.PassStatus;
+import com.spring.pass.domain.constant.PassTicketStatus;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -20,7 +20,7 @@ public class PassTicket extends AuditingFields {
     private String userId; //사용자 ID
 
     @Enumerated(EnumType.STRING)
-    private PassStatus status; //이용권 상태
+    private PassTicketStatus status; //이용권 상태
     private Integer remainingCount; //남은 횟수
 
     private LocalDateTime startedAt; //시작 일시
@@ -30,7 +30,7 @@ public class PassTicket extends AuditingFields {
     protected PassTicket() {
     }
 
-    private PassTicket(Long packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
+    private PassTicket(Long packageId, String userId, PassTicketStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
         this.packageId = packageId;
         this.userId = userId;
         this.status = status;
@@ -40,8 +40,16 @@ public class PassTicket extends AuditingFields {
         this.expiredAt = expiredAt;
     }
 
-    public static PassTicket of(Long packageId, String userId, PassStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
+    public static PassTicket of(Long packageId, String userId, PassTicketStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime expiredAt) {
         return new PassTicket(packageId, userId, status, remainingCount, startedAt, endedAt, expiredAt);
+    }
+
+    public void expire () {
+        this.expiredAt = LocalDateTime.now();
+    }
+
+    public void changeStatus(PassTicketStatus status) {
+        this.status = status;
     }
 
     @Override
