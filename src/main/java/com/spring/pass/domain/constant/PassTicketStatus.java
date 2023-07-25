@@ -5,6 +5,6 @@ package com.spring.pass.domain.constant;
  * <br><br>
  * READY, IN_PROGRESS, EXPIRED
  */
-public enum PassStatus {
-    READY, IN_PROGRESS, EXPIRED
+public enum PassTicketStatus {
+    READY, PROGRESSED, EXPIRED
 }

@@ -6,5 +6,5 @@ package com.spring.pass.domain.constant;
  * READY, IN_PROGRESS, COMPLETED, CANCELLED
  */
 public enum BookingStatus {
-    READY, IN_PROGRESS, COMPLETED, CANCELLED
+    READY, PROGRESSED, COMPLETED, CANCELLED
 }

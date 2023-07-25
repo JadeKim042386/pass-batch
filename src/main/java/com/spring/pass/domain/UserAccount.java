@@ -1,6 +1,6 @@
 package com.spring.pass.domain;
 
-import com.spring.pass.domain.constant.UserStatus;
+import com.spring.pass.domain.constant.UserAccountStatus;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -17,14 +17,14 @@ public class UserAccount extends AuditingFields {
     private String userName; //사용자 이름
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status; //사용자 상태
+    private UserAccountStatus status; //사용자 상태
     private String phone; //폰 번호
     private String meta; //메타 정보(JSON)
 
     protected UserAccount() {
     }
 
-    private UserAccount(String userId, String userName, UserStatus status, String phone, String meta) {
+    private UserAccount(String userId, String userName, UserAccountStatus status, String phone, String meta) {
         this.userId = userId;
         this.userName = userName;
         this.status = status;
@@ -32,7 +32,7 @@ public class UserAccount extends AuditingFields {
         this.meta = meta;
     }
 
-    public static UserAccount of(String userId, String userName, UserStatus status, String phone, String meta) {
+    public static UserAccount of(String userId, String userName, UserAccountStatus status, String phone, String meta) {
         return new UserAccount(userId, userName, status, phone, meta);
     }
 
