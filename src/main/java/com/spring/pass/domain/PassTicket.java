@@ -44,6 +44,10 @@ public class PassTicket extends AuditingFields {
         return new PassTicket(packageId, userId, status, remainingCount, startedAt, endedAt, expiredAt);
     }
 
+    public static PassTicket of(Long packageId, String userId, PassTicketStatus status, Integer remainingCount, LocalDateTime startedAt, LocalDateTime endedAt) {
+        return new PassTicket(packageId, userId, status, remainingCount, startedAt, endedAt, null);
+    }
+
     public static PassTicket renewal(BulkPassTicket bulkPassTicket, String userId) {
         return PassTicket.of(
                 bulkPassTicket.getPackageId(),
