@@ -9,6 +9,10 @@ spring:
     jdbc:
       initialize-schema: always
 
+kakao:
+  host: https://kapi.kakao.com
+  token: ${ACCESS_TOKEN}
+
 ---
 
 spring:
