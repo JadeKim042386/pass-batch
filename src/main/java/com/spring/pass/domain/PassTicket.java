@@ -44,6 +44,18 @@ public class PassTicket extends AuditingFields {
         return new PassTicket(packageId, userId, status, remainingCount, startedAt, endedAt, expiredAt);
     }
 
+    public static PassTicket renewal(BulkPassTicket bulkPassTicket, String userId) {
+        return PassTicket.of(
+                bulkPassTicket.getPackageId(),
+                userId,
+                PassTicketStatus.READY,
+                bulkPassTicket.getCount(),
+                bulkPassTicket.getStartedAt(),
+                bulkPassTicket.getEndedAt(),
+                null
+        );
+    }
+
     public void expire () {
         this.expiredAt = LocalDateTime.now();
     }

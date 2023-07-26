@@ -16,6 +16,10 @@ public class UserAccount extends AuditingFields {
     private String userId;
     private String userName; //사용자 이름
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "userGroupId")
+    private UserGroup userGroup; //속한 사용자 그룹
+
     @Enumerated(EnumType.STRING)
     private UserAccountStatus status; //사용자 상태
     private String phone; //폰 번호
@@ -24,16 +28,17 @@ public class UserAccount extends AuditingFields {
     protected UserAccount() {
     }
 
-    private UserAccount(String userId, String userName, UserAccountStatus status, String phone, String meta) {
+    private UserAccount(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, String meta) {
         this.userId = userId;
+        this.userGroup = userGroup;
         this.userName = userName;
         this.status = status;
         this.phone = phone;
         this.meta = meta;
     }
 
-    public static UserAccount of(String userId, String userName, UserAccountStatus status, String phone, String meta) {
-        return new UserAccount(userId, userName, status, phone, meta);
+    public static UserAccount of(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, String meta) {
+        return new UserAccount(userId, userName, userGroup, status, phone, meta);
     }
 
     @Override
