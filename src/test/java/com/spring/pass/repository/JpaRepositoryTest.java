@@ -10,12 +10,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -54,7 +56,7 @@ class JpaRepositoryTest {
             long previousCount = bookingRepository.count();
             Booking booking = Booking.of(
                     1L,
-                    "A1000000",
+                    createUserAccount(),
                     BookingStatus.PROGRESSED,
                     true,
                     true,
@@ -67,6 +69,8 @@ class JpaRepositoryTest {
             // Then
             assertThat(bookingRepository.count()).isEqualTo(previousCount + 1);
         }
+
+
 
         @DisplayName("예약 정보 삭제")
         @Test
@@ -255,13 +259,24 @@ class JpaRepositoryTest {
             // Then
             assertThat(userAccountRepository.count()).isEqualTo(previousCount - 1);
         }
+    }
 
-        private UserGroup createUserGroup() {
-            return UserGroup.of(
+    private UserAccount createUserAccount() {
+        return UserAccount.of(
+                "A1000000",
+                "김주영",
+                    createUserGroup(),
+                    UserAccountStatus.ACTIVE,
+                    "01012341234",
+                    Map.of("uuid", "1234asdf")
+                );
+    }
+
+    private UserGroup createUserGroup() {
+        return UserGroup.of(
                 "TAESAN",
                 "태산",
                 "태산 임직원 그룹"
-            );
-        }
+        );
     }
 }
