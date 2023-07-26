@@ -1,10 +1,8 @@
 package com.spring.pass.repository;
 
 import com.spring.pass.config.TestJpaConfig;
-import com.spring.pass.domain.Booking;
 import com.spring.pass.domain.Package;
-import com.spring.pass.domain.PassTicket;
-import com.spring.pass.domain.UserAccount;
+import com.spring.pass.domain.*;
 import com.spring.pass.domain.constant.BookingStatus;
 import com.spring.pass.domain.constant.PassTicketStatus;
 import com.spring.pass.domain.constant.UserAccountStatus;
@@ -13,15 +11,14 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @DisplayName("JPA Repository 테스트")
@@ -206,13 +203,25 @@ class JpaRepositoryTest {
 
         @DisplayName("사용자 정보 조회")
         @Test
-        void getUserAccount() {
+        void getUserAccounts() {
             // Given
 
             // When
             List<UserAccount> userAccounts = userAccountRepository.findAll();
             // Then
             assertThat(userAccounts).isNotNull().hasSize(7);
+        }
+
+        @DisplayName("사용자 조회")
+        @Test
+        void getUserAccount() {
+            // Given
+            String UserId = "A1000000";
+            // When
+            Optional<UserAccount> userAccount = userAccountRepository.findById(UserId);
+            // Then
+            assertThat(userAccount).get()
+                    .hasFieldOrPropertyWithValue("userGroup.userGroupId", "HANBADA");
         }
 
         @DisplayName("사용자 정보 추가")
@@ -223,6 +232,7 @@ class JpaRepositoryTest {
             UserAccount userAccount = UserAccount.of(
                     "C1000000",
                     "김주영",
+                    createUserGroup(),
                     UserAccountStatus.ACTIVE,
                     "01012341234",
                     null
@@ -244,6 +254,14 @@ class JpaRepositoryTest {
             userAccountRepository.delete(userAccount);
             // Then
             assertThat(userAccountRepository.count()).isEqualTo(previousCount - 1);
+        }
+
+        private UserGroup createUserGroup() {
+            return UserGroup.of(
+                "TAESAN",
+                "태산",
+                "태산 임직원 그룹"
+            );
         }
     }
 }
