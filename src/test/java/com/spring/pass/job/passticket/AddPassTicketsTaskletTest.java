@@ -11,6 +11,7 @@ import com.spring.pass.repository.BulkPassTicketRepository;
 import com.spring.pass.repository.PassTicketRepository;
 import com.spring.pass.repository.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -25,7 +26,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.*;
 
 @Slf4j
@@ -38,6 +39,7 @@ class AddPassTicketsTaskletTest {
     @Mock private BulkPassTicketRepository bulkPassTicketRepository;
     @Mock private UserAccountRepository userAccountRepository;
 
+    @DisplayName("이용권 일괄 지급 Tasklet 테스트")
     @Test
     void execute() throws Exception {
         // Given

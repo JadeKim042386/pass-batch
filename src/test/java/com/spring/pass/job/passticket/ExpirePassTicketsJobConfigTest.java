@@ -6,6 +6,7 @@ import com.spring.pass.domain.PassTicket;
 import com.spring.pass.domain.constant.PassTicketStatus;
 import com.spring.pass.repository.PassTicketRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -43,6 +44,7 @@ class ExpirePassTicketsJobConfigTest {
         this.passTicketRepository = passTicketRepository;
     }
 
+    @DisplayName("이용권 만료 기능 테스트")
     @Test
     public void expirePassTicketsStep() throws Exception {
         // Given
