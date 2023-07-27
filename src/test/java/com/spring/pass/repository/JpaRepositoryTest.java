@@ -6,6 +6,7 @@ import com.spring.pass.domain.*;
 import com.spring.pass.domain.constant.BookingStatus;
 import com.spring.pass.domain.constant.PassTicketStatus;
 import com.spring.pass.domain.constant.UserAccountStatus;
+import io.hypersistence.utils.hibernate.type.json.internal.JacksonUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -333,7 +334,11 @@ class JpaRepositoryTest {
                     createUserGroup("GROUP", "그룹"),
                     UserAccountStatus.ACTIVE,
                     "01012341234",
-                    Map.of("uuid", "1234asdf")
+                JacksonUtil.toJsonNode("""
+                        {
+                            "uuid": "1234asdf"
+                        }
+                        """)
                 );
     }
 
