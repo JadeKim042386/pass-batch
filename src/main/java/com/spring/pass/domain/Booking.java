@@ -67,6 +67,14 @@ public class Booking extends AuditingFields {
         this.usedPass = true;
     }
 
+    /**
+     * endedAt (yyyy-MM-HH 00:00:00)
+     */
+    public LocalDateTime getStatisticsAt() {
+        return this.endedAt.withHour(0).withMinute(0).withSecond(0).withNano(0);
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
