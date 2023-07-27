@@ -1,15 +1,17 @@
 package com.spring.pass.domain;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.spring.pass.domain.constant.UserAccountStatus;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
-import org.yaml.snakeyaml.tokens.ScalarToken;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 //TODO: save 처리시 불필요한 select 방지를 위한 isNew 추가
 @ToString(callSuper = true)
@@ -30,10 +32,10 @@ public class UserAccount extends AuditingFields {
     private UserAccountStatus status; //사용자 상태
     private String phone; //폰 번호
 
-    //json 형태로 저장되어 있는 문자열 데이터를 Map으로 매핑
+    //json 형태로 저장되어 있는 문자열 데이터를 JsonNode로 매핑
     @Type(type="json")
     @Column(columnDefinition = "json")
-    private Map<String, Object> meta = new HashMap<>(); //메타 정보(JSON)
+    private JsonNode meta; //메타 정보(JSON)
 
     @ToString.Exclude
     @OrderBy("createdAt ASC")
@@ -43,7 +45,7 @@ public class UserAccount extends AuditingFields {
     protected UserAccount() {
     }
 
-    private UserAccount(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, Map<String, Object> meta) {
+    private UserAccount(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, JsonNode meta) {
         this.userId = userId;
         this.userGroup = userGroup;
         this.userName = userName;
@@ -52,13 +54,13 @@ public class UserAccount extends AuditingFields {
         this.meta = meta;
     }
 
-    public static UserAccount of(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, Map<String, Object> meta) {
+    public static UserAccount of(String userId, String userName, UserGroup userGroup, UserAccountStatus status, String phone, JsonNode meta) {
         return new UserAccount(userId, userName, userGroup, status, phone, meta);
     }
 
     public String getUuid() {
         String uuid = null;
-        if (meta.containsKey("uuid")) {
+        if (meta.has("uuid")) {
             uuid = String.valueOf(meta.get("uuid"));
         }
         return uuid;

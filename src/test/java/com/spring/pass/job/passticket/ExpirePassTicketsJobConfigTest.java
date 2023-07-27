@@ -50,11 +50,17 @@ class ExpirePassTicketsJobConfigTest {
         // Given
         addPassEntities(10);
         // When
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        JobInstance jobInstance = jobExecution.getJobInstance();
+        JobExecution jobExecution = jobLauncherTestUtils.launchStep("expirePassTicketsStep");
         // Then
-        assertThat(ExitStatus.COMPLETED).isEqualTo(jobExecution.getExitStatus());
-        assertThat("expirePassTicketsJob").isEqualTo(jobInstance.getJobName());
+        assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
+
+        List<PassTicket> passTickets = passTicketRepository.findAll();
+        for (PassTicket passTicket : passTickets) {
+            if (passTicket.getEndedAt().isBefore(LocalDateTime.now())) {
+                assertThat(passTicket.getStatus()).isEqualTo(PassTicketStatus.EXPIRED);
+                assertThat(passTicket.getExpiredAt()).isNotNull();
+            }
+        }
     }
 
     private void addPassEntities(int size) {
@@ -65,7 +71,7 @@ class ExpirePassTicketsJobConfigTest {
         for (int i = 0; i < size; ++i) {
             PassTicket passTicket = PassTicket.of(
                     1L,
-                    "A" + 1000000 + i,
+                    "C" + 1000000 + i,
                     PassTicketStatus.PROGRESSED,
                     random.nextInt(11),
                     now.minusDays(60),
