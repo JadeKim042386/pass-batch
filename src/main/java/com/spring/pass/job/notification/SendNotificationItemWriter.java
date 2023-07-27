@@ -18,7 +18,7 @@ public class SendNotificationItemWriter implements ItemWriter<Notification> {
     private final KakaoMessageAdaptor kakaoMessageAdaptor;
 
     @Override
-    public void write(List<? extends Notification> notifications) throws Exception {
+    public void write(List<? extends Notification> notifications) {
         int count = 0;
 
         for (Notification notification : notifications) {
