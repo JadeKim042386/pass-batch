@@ -6,7 +6,9 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @ToString(callSuper = true)
 @Getter
@@ -26,6 +28,11 @@ public class PassTicket extends AuditingFields {
     private LocalDateTime startedAt; //시작 일시
     private LocalDateTime endedAt; //종료 일시
     private LocalDateTime expiredAt; //만료 일시
+
+    @ToString.Exclude
+    @OrderBy("createdAt ASC")
+    @OneToMany(mappedBy = "passTicket", cascade = CascadeType.ALL)
+    private Set<Booking> bookings = new HashSet<>();
 
     protected PassTicket() {
     }
@@ -58,6 +65,13 @@ public class PassTicket extends AuditingFields {
                 bulkPassTicket.getEndedAt(),
                 null
         );
+    }
+
+    /**
+     * 이용 횟수 - 1
+     */
+    public void completeBooking() {
+        this.remainingCount -= 1;
     }
 
     public void expire () {
