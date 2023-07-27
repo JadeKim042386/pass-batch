@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,7 +56,7 @@ class JpaRepositoryTest {
             // Given
             long previousCount = bookingRepository.count();
             Booking booking = Booking.of(
-                    1L,
+                    createPassTicket(),
                     createUserAccount(),
                     BookingStatus.PROGRESSED,
                     true,
@@ -236,7 +237,7 @@ class JpaRepositoryTest {
             UserAccount userAccount = UserAccount.of(
                     "C1000000",
                     "김주영",
-                    createUserGroup(),
+                    createUserGroup("TAESAN", "태산"),
                     UserAccountStatus.ACTIVE,
                     "01012341234",
                     null
@@ -291,7 +292,7 @@ class JpaRepositoryTest {
             // Given
             long previousCount = userGroupRepository.count();
             System.out.println("previousCount = " + previousCount);
-            UserGroup userGroup = createUserGroup();
+            UserGroup userGroup = createUserGroup("GROUP", "그룹");
             // When
             userGroupRepository.save(userGroup);
             // Then
@@ -312,22 +313,35 @@ class JpaRepositoryTest {
         }
     }
 
+    private PassTicket createPassTicket() {
+        PassTicket passTicket = PassTicket.of(
+                1L,
+                "A1000000",
+                PassTicketStatus.PROGRESSED,
+                100,
+                LocalDateTime.now().minusDays(10),
+                LocalDateTime.now().plusDays(10)
+        );
+        ReflectionTestUtils.setField(passTicket, "id", 1L);
+        return passTicket;
+    }
+
     private UserAccount createUserAccount() {
         return UserAccount.of(
                 "A1000000",
                 "김주영",
-                    createUserGroup(),
+                    createUserGroup("GROUP", "그룹"),
                     UserAccountStatus.ACTIVE,
                     "01012341234",
                     Map.of("uuid", "1234asdf")
                 );
     }
 
-    private UserGroup createUserGroup() {
+    private UserGroup createUserGroup(String userGroupId, String userGroupName) {
         return UserGroup.of(
-                "GROUP",
-                "그룹",
-                "그룹"
+                userGroupId,
+                userGroupName,
+                userGroupName
         );
     }
 }
