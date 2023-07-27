@@ -2,13 +2,6 @@ package com.spring.pass.job.notification;
 
 import com.spring.pass.config.TestBatchConfig;
 import com.spring.pass.config.TestJpaConfig;
-import com.spring.pass.domain.Booking;
-import com.spring.pass.domain.PassTicket;
-import com.spring.pass.domain.UserAccount;
-import com.spring.pass.domain.UserGroup;
-import com.spring.pass.domain.constant.BookingStatus;
-import com.spring.pass.domain.constant.PassTicketStatus;
-import com.spring.pass.domain.constant.UserAccountStatus;
 import com.spring.pass.repository.BookingRepository;
 import com.spring.pass.repository.PassTicketRepository;
 import com.spring.pass.repository.UserAccountRepository;
@@ -23,9 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,7 +47,7 @@ class SendNotificationBeforeClassJobConfigTest {
     @Test
     void addNotificationStep() {
         // Given
-        addBooking();
+
         // When
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("addNotificationStep");
         // Then
@@ -69,49 +59,10 @@ class SendNotificationBeforeClassJobConfigTest {
     @Test
     void sendNotificationStep() {
         // Given
-        addBooking();
+
         // When
         JobExecution jobExecution = jobLauncherTestUtils.launchStep("sendNotificationStep");
         // Then
         assertThat(jobExecution.getExitStatus()).isEqualTo(ExitStatus.COMPLETED);
-    }
-
-    private void addBooking() {
-        String userId = "C1000000";
-        LocalDateTime now = LocalDateTime.now();
-        UserAccount userAccount = UserAccount.of(
-                userId,
-                "김주영",
-                createUserGroup(),
-                UserAccountStatus.ACTIVE,
-                "01012341234",
-                Map.of("uuid", "1234asdf")
-        );
-        PassTicket passTicket = PassTicket.of(
-                1L,
-                userId,
-                PassTicketStatus.PROGRESSED,
-                10,
-                now.minusDays(60),
-                now.minusDays(1)
-        );
-        Booking booking = Booking.of(
-                passTicket.getPackageId(),
-                userAccount,
-                BookingStatus.READY,
-                now.plusMinutes(10),
-                now.plusMinutes(50)
-        );
-
-        userAccountRepository.save(userAccount);
-        passTicketRepository.save(passTicket);
-        bookingRepository.save(booking);
-    }
-
-    private UserGroup createUserGroup() {
-        return UserGroup.of(
-                "TAESAN",
-                "태산"
-        );
     }
 }
