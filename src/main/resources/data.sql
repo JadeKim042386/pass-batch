@@ -24,4 +24,4 @@ INSERT INTO pass_ticket (package_id, user_id, status, remaining_count, started_a
     (1, 'A1000000', 'PROGRESSED', 100, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00');
 
 INSERT INTO booking (pass_ticket_id, user_id, status, used_pass, attended, started_at, ended_at, cancelled_at, created_at) VALUES
-    (1, 'A1000000', 'PROGRESSED', true, true, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00');
+    (1, 'A1000000', 'COMPLETED', false, true, '2022-08-15 00:00:00', '2022-08-16 00:00:00', NULL, '2022-08-15 00:00:00');

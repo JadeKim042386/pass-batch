@@ -17,7 +17,10 @@ public class Booking extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long passTicketId; //이용권 ID
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "passTicketId")
+    private PassTicket passTicket; //이용권 ID
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -38,8 +41,8 @@ public class Booking extends AuditingFields {
     protected Booking() {
     }
 
-    private Booking(Long passTicketId, UserAccount userAccount, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
-        this.passTicketId = passTicketId;
+    private Booking(PassTicket passTicket, UserAccount userAccount, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
+        this.passTicket = passTicket;
         this.userAccount = userAccount;
         this.status = status;
         this.usedPass = usedPass;
@@ -49,12 +52,19 @@ public class Booking extends AuditingFields {
         this.cancelledAt = cancelledAt;
     }
 
-    public static Booking of(Long passTicketId, UserAccount userAccount, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
-        return new Booking(passTicketId, userAccount, status, usedPass, attended, startedAt, endedAt, cancelledAt);
+    public static Booking of(PassTicket passTicket, UserAccount userAccount, BookingStatus status, boolean usedPass, boolean attended, LocalDateTime startedAt, LocalDateTime endedAt, LocalDateTime cancelledAt) {
+        return new Booking(passTicket, userAccount, status, usedPass, attended, startedAt, endedAt, cancelledAt);
     }
 
-    public static Booking of(Long passTicketId, UserAccount userAccount, BookingStatus status, LocalDateTime startedAt, LocalDateTime endedAt) {
-        return Booking.of(passTicketId, userAccount, status, false, false, startedAt, endedAt, null);
+    public static Booking of(PassTicket passTicket, UserAccount userAccount, BookingStatus status, LocalDateTime startedAt, LocalDateTime endedAt) {
+        return Booking.of(passTicket, userAccount, status, false, false, startedAt, endedAt, null);
+    }
+
+    /**
+     * 이용권 사용 여부(usedPass) = true
+     */
+    public void usePassTicket() {
+        this.usedPass = true;
     }
 
     @Override
