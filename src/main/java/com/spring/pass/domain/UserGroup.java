@@ -3,10 +3,10 @@ package com.spring.pass.domain;
 import lombok.Getter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
@@ -18,6 +18,11 @@ public class UserGroup extends AuditingFields {
 
     private String userGroupName;
     private String description;
+
+    @ToString.Exclude
+    @OrderBy("createdAt ASC")
+    @OneToMany(mappedBy = "userGroup", cascade = CascadeType.ALL)
+    private Set<UserAccount> userAccount = new HashSet<>();
 
     protected UserGroup() {
     }

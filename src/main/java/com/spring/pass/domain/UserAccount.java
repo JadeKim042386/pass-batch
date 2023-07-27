@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.ToString;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.yaml.snakeyaml.tokens.ScalarToken;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 //TODO: save 처리시 불필요한 select 방지를 위한 isNew 추가
 @ToString(callSuper = true)
@@ -35,6 +34,11 @@ public class UserAccount extends AuditingFields {
     @Type(type="json")
     @Column(columnDefinition = "json")
     private Map<String, Object> meta = new HashMap<>(); //메타 정보(JSON)
+
+    @ToString.Exclude
+    @OrderBy("createdAt ASC")
+    @OneToMany(mappedBy = "userAccount", cascade = CascadeType.ALL)
+    private Set<Booking> bookings = new HashSet<>();
 
     protected UserAccount() {
     }
