@@ -261,6 +261,57 @@ class JpaRepositoryTest {
         }
     }
 
+    @DisplayName("UserGroup Jpa 테스트")
+    @Import(TestJpaConfig.class)
+    @DataJpaTest
+    @Nested
+    class UserGroupJpaTest {
+        private final UserGroupRepository userGroupRepository;
+
+        @Autowired
+        UserGroupJpaTest(UserGroupRepository userGroupRepository) {
+            this.userGroupRepository = userGroupRepository;
+        }
+
+        @DisplayName("사용자 그룹 조회")
+        @Test
+        void getUserGroup() {
+            // Given
+            String userGroupId = "HANBADA";
+            // When
+            Optional<UserGroup> userGroup = userGroupRepository.findById(userGroupId);
+            // Then
+            assertThat(userGroup).get()
+                    .hasFieldOrPropertyWithValue("userGroupId", "HANBADA");
+        }
+
+        @DisplayName("사용자 그룹 추가")
+        @Test
+        void addUserGroup() {
+            // Given
+            long previousCount = userGroupRepository.count();
+            System.out.println("previousCount = " + previousCount);
+            UserGroup userGroup = createUserGroup();
+            // When
+            userGroupRepository.save(userGroup);
+            // Then
+            assertThat(userGroupRepository.count()).isEqualTo(previousCount + 1);
+        }
+
+        @DisplayName("사용자 그룹 삭제")
+        @Test
+        void updateUserGroup() {
+            // Given
+            long previousCount = userGroupRepository.count();
+            String userGroupId = "HANBADA";
+            UserGroup userGroup = userGroupRepository.getReferenceById(userGroupId);
+            // When
+            userGroupRepository.delete(userGroup);
+            // Then
+            assertThat(userGroupRepository.count()).isEqualTo(previousCount - 1);
+        }
+    }
+
     private UserAccount createUserAccount() {
         return UserAccount.of(
                 "A1000000",
@@ -274,9 +325,9 @@ class JpaRepositoryTest {
 
     private UserGroup createUserGroup() {
         return UserGroup.of(
-                "TAESAN",
-                "태산",
-                "태산 임직원 그룹"
+                "GROUP",
+                "그룹",
+                "그룹"
         );
     }
 }
