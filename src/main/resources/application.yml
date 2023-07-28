@@ -6,8 +6,13 @@ spring:
     hikari:
       maximum-pool-size: 20
   batch:
+    job:
+      # true는 Spring Boot 실행 시 등록되어 있는 Job들을 실행
+      enabled: false
     jdbc:
       initialize-schema: always
+      # JPA does not support custom isolation levels, so locks may not be taken when launching Jobs. To silence this warning, set 'spring.batch.jdbc.isolation-level-for-create' to 'default'.
+      isolation-level-for-create: default
 
 kakao:
   host: https://kapi.kakao.com
