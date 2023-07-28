@@ -58,7 +58,7 @@ public class SendNotificationBeforeClassJobConfig {
      * Cursor 기법의 ItemReader는 thread-safe하지 않아 Paging 기법을 사용하거나 synchronized 를 선언하여 순차적으로 수행
      * Paging의 경우 무결성 문제가 있기 때문에 이를 고려하여 synchronized로 사용
      */
-    @Bean
+    @Bean(destroyMethod = "")
     public JpaPagingItemReader<Booking> addNotificationItemReader() {
         return new JpaPagingItemReaderBuilder<Booking>()
                 .name("addNotificationItemReader")
